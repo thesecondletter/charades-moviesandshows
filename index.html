@@ -7,7 +7,9 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #fef6e4;
+            background: linear-gradient(90deg, #ffffff, #f0f0f0);
+            background-size: 200% 200%;
+            animation: gradientAnimation 5s ease infinite;
             color: #333;
             text-align: center;
             margin: 0;
@@ -17,6 +19,18 @@
             align-items: center;
             height: 100vh;
             transition: background-color 0.3s ease;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         .container {
@@ -83,6 +97,21 @@
         .hidden {
             display: none;
         }
+
+        #play-again {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #play-again:hover {
+            background-color: #ff4b4b;
+        }
     </style>
 </head>
 <body>
@@ -99,6 +128,7 @@
         <p id="word-display" class="hidden"></p>
         <p id="timer" class="hidden"></p>
         <p id="scoreboard" class="hidden"></p>
+        <button id="play-again" class="hidden" onclick="resetGame()">Play Again</button>
     </div>
 
     <script>
@@ -118,6 +148,7 @@
         const scoreboard = document.getElementById('scoreboard');
         const durationText = document.getElementById('game-duration-text');
         const timerOptions = document.querySelector('.timer-options');
+        const playAgainButton = document.getElementById('play-again');
 
         // Function to start the game
         function startGame(duration) {
@@ -133,6 +164,7 @@
             durationText.classList.add('hidden');
             wordDisplay.classList.remove('hidden');
             timerDisplay.classList.remove('hidden');
+            playAgainButton.classList.add('hidden');
 
             // Start the countdown timer
             gameTimer = setInterval(updateTimer, 1000);
@@ -187,7 +219,7 @@
 
             // If waiting for neutral position, check if the phone is back to normal
             if (waitingForNeutral) {
-                if (gamma > -10 && gamma < 10) {  // Gamma between -10 and 10 means phone is back to normal position
+                if (gamma > -10 && gamma < 10) {  // Gamma between -10 and 10 means phone is back to neutral position
                     waitingForNeutral = false;  // Now allow detection of next tilt
                 }
                 return;  // Don't process further until the phone is back to normal
@@ -195,12 +227,12 @@
 
             if (gamma > 30) {  // Phone tilted to the right (correct)
                 totalCorrect++;
-                flashScreen('green');  // Flash green for correct answer
+                flashScreen('#66ff66');  // Light green flash for correct answer
                 showNextWord();  // Move to the next word
                 waitingForNeutral = true;  // Wait for the phone to return to neutral position
             } else if (gamma < -30) {  // Phone tilted to the left (wrong)
                 totalWrong++;
-                flashScreen('red');  // Flash red for wrong answer
+                flashScreen('#ff6666');  // Light red flash for wrong answer
                 showNextWord();  // Move to the next word
                 waitingForNeutral = true;  // Wait for the phone to return to neutral position
             }
@@ -210,7 +242,7 @@
         function flashScreen(color) {
             document.body.style.backgroundColor = color;
             setTimeout(() => {
-                document.body.style.backgroundColor = '#fef6e4';  // Reset background after flash
+                document.body.style.backgroundColor = '';  // Reset background after flash
             }, 300);
         }
 
@@ -226,8 +258,17 @@
                 Correct: ${totalCorrect} <br>
                 Wrong: ${totalWrong}
             `;
+            playAgainButton.classList.remove('hidden');
+        }
+
+        // Function to reset the game
+        function resetGame() {
+            timerOptions.classList.remove('hidden');
+            durationText.classList.remove('hidden');
+            scoreboard.classList.add('hidden');
+            playAgainButton.classList.add('hidden');
         }
     </script>
-<p>nr3</p>
+<p>nr4</p>
 </body>
 </html>
