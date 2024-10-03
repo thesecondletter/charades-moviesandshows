@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charades Game</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #fef6e4;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #ff6b6b;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .timer-options {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        button {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+            button:hover {
+                background-color: #ff4b4b;
+            }
+
+        #word-display {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            font-weight: bold;
+            color: #1a535c;
+        }
+
+        #timer {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: #ff6b6b;
+        }
+
+        #scoreboard {
+            font-size: 1.3rem;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎬 Charades Game 🎬</h1>
+        <p>How long would you like to play?</p>
+        <div class="timer-options">
+            <button onclick="startGame(1)">1 Min</button>
+            <button onclick="startGame(2)">2 Mins</button>
+            <button onclick="startGame(3)">3 Mins</button>
+        </div>
+
+        <p id="word-display" class="hidden"></p>
+        <p id="timer" class="hidden"></p>
+        <p id="scoreboard" class="hidden"></p>
+    </div>
+
+    <script>
+        const words = [
+            'Leonardo DiCaprio', 'Friends', 'Tom Hanks', 'The Ellen Show', 'The Simpsons', 'Scarlett Johansson', 'Titanic',
+            'Breaking Bad', 'Robert Downey Jr.', 'The Office', 'Oprah Winfrey', 'Star Wars', 'The Avengers', 'Chris Hemsworth',
+            'The Late Show with Stephen Colbert', 'Seinfeld', 'Johnny Depp', 'Jennifer Lawrence', 'Game of Thrones', 'Dwayne Johnson',
+            'Jimmy Fallon', 'The Big Bang Theory', 'James Bond', 'Simpsons', 'Hugh Jackman'
+        ];
+
+        let timeLeft, totalCorrect = 0, totalWrong = 0;
+        let gameTimer, currentWord, wordIndex = 0;
+        let gameDuration;
+        const wordDisplay = document.getElementById('word-display');
+        const timerDisplay = document.getElementById('timer');
+        const scoreboard = document.getElementById('scoreboard');
+
+        // Function to start the game
+        function startGame(duration) {
+            gameDuration = duration * 60;  // Convert minutes to seconds
+            timeLeft = gameDuration;
+            totalCorrect = 0;
+            totalWrong = 0;
+            wordIndex = 0;
+            showNextWord();
+
+            // Hide buttons and show game elements
+            document.querySelector('.timer-options').classList.add('hidden');
+            wordDisplay.classList.remove('hidden');
+            timerDisplay.classList.remove('hidden');
+
+            // Start the countdown timer
+            gameTimer = setInterval(updateTimer, 1000);
+
+            // Start motion detection for correct/wrong answers
+            startMotionDetection();
+        }
+
+        // Update the countdown timer every second
+        function updateTimer() {
+            timeLeft--;
+            timerDisplay.textContent = `⏳ Time left: ${timeLeft} seconds`;
+
+            if (timeLeft <= 0) {
+                endGame();
+            }
+        }
+
+        // Show the next word
+        function showNextWord() {
+            currentWord = words[wordIndex % words.length];  // Cycle through the words
+            wordIndex++;
+            wordDisplay.textContent = `🎭 Act this out: ${currentWord}`;
+        }
+
+        // Handle motion detection
+        function startMotionDetection() {
+            window.addEventListener('deviceorientation', handleOrientation);
+        }
+
+        // Handle device orientation events (phone up = correct, phone down = wrong)
+        function handleOrientation(event) {
+            const beta = event.beta;
+
+            if (beta > 50) {  // Phone face up
+                totalCorrect++;
+                showNextWord();
+            } else if (beta < -50) {  // Phone face down
+                totalWrong++;
+                showNextWord();
+            }
+        }
+
+        // End the game and show results
+        function endGame() {
+            clearInterval(gameTimer);
+            window.removeEventListener('deviceorientation', handleOrientation);
+            wordDisplay.classList.add('hidden');
+            timerDisplay.classList.add('hidden');
+            scoreboard.classList.remove('hidden');
+            scoreboard.innerHTML = `
+                🎉 Game Over! <br>
+                Correct: ${totalCorrect} <br>
+                Wrong: ${totalWrong}
+            `;
+        }
+    </script>
+
+</body>
+</html>
