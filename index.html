@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -56,9 +56,9 @@
             transition: background-color 0.3s ease;
         }
 
-            button:hover {
-                background-color: #ff4b4b;
-            }
+        button:hover {
+            background-color: #ff4b4b;
+        }
 
         #word-display {
             font-size: 1.8rem;
@@ -162,10 +162,10 @@
         function handleOrientation(event) {
             const beta = event.beta;
 
-            if (beta > 50) {  // Phone face up
+            if (beta > 50) {  // Phone tilted up (face up)
                 totalCorrect++;
                 showNextWord();
-            } else if (beta < -50) {  // Phone face down
+            } else if (beta < -50) {  // Phone tilted down (face down)
                 totalWrong++;
                 showNextWord();
             }
