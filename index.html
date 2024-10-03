@@ -18,6 +18,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column;
             transition: background-color 0.5s ease;
         }
 
@@ -113,6 +114,24 @@
         #play-again:hover {
             background-color: #ff4b4b;
         }
+
+        /* Desktop-only note card */
+        #desktop-note {
+            display: none;
+            margin-top: 20px;
+            background-color: #ffcccc;
+            color: #333;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+
+        /* Show note on screens wider than 768px (desktop devices) */
+        @media (min-width: 768px) {
+            #desktop-note {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
@@ -130,6 +149,11 @@
         <p id="timer" class="hidden"></p>
         <p id="scoreboard" class="hidden"></p>
         <button id="play-again" class="hidden" onclick="resetGame()">Play Again</button>
+    </div>
+
+    <!-- Note card for desktop users -->
+    <div id="desktop-note">
+        ⚠️ This game is designed to be played only on smartphones.
     </div>
 
     <script>
