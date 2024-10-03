@@ -112,6 +112,7 @@
         let timeLeft, totalCorrect = 0, totalWrong = 0;
         let gameTimer, currentWord, wordIndex = 0;
         let gameDuration;
+        let waitingForNeutral = false;  // To track if we are waiting for the phone to return to neutral
         const wordDisplay = document.getElementById('word-display');
         const timerDisplay = document.getElementById('timer');
         const scoreboard = document.getElementById('scoreboard');
@@ -184,14 +185,24 @@
         function handleOrientation(event) {
             const gamma = event.gamma;  // Gamma is the left/right tilt of the phone
 
+            // If waiting for neutral position, check if the phone is back to normal
+            if (waitingForNeutral) {
+                if (gamma > -10 && gamma < 10) {  // Gamma between -10 and 10 means phone is back to normal position
+                    waitingForNeutral = false;  // Now allow detection of next tilt
+                }
+                return;  // Don't process further until the phone is back to normal
+            }
+
             if (gamma > 30) {  // Phone tilted to the right (correct)
                 totalCorrect++;
                 flashScreen('green');  // Flash green for correct answer
                 showNextWord();  // Move to the next word
+                waitingForNeutral = true;  // Wait for the phone to return to neutral position
             } else if (gamma < -30) {  // Phone tilted to the left (wrong)
                 totalWrong++;
                 flashScreen('red');  // Flash red for wrong answer
                 showNextWord();  // Move to the next word
+                waitingForNeutral = true;  // Wait for the phone to return to neutral position
             }
         }
 
@@ -217,6 +228,6 @@
             `;
         }
     </script>
-<p>nr2</p>
+<p>nr3</p>
 </body>
 </html>
