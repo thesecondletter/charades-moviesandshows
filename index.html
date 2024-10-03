@@ -135,8 +135,26 @@
             // Start the countdown timer
             gameTimer = setInterval(updateTimer, 1000);
 
-            // Start motion detection for correct/wrong answers
-            startMotionDetection();
+            // Request permission for motion sensors
+            requestMotionPermission();
+        }
+
+        // Request motion sensor permissions on iOS and some Android devices
+        function requestMotionPermission() {
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission()
+                .then(permissionState => {
+                    if (permissionState === 'granted') {
+                        startMotionDetection();
+                    } else {
+                        alert('Permission to access motion sensors was denied.');
+                    }
+                })
+                .catch(console.error);
+            } else {
+                // For browsers where no permission is required
+                startMotionDetection();
+            }
         }
 
         // Update the countdown timer every second
@@ -165,10 +183,10 @@
         function handleOrientation(event) {
             const beta = event.beta;
 
-            if (beta > 50) {  // Phone tilted up (face up)
+            if (beta > 30) {  // Phone tilted up (face up)
                 totalCorrect++;
                 showNextWord();  // Move to the next word
-            } else if (beta < -50) {  // Phone tilted down (face down)
+            } else if (beta < -30) {  // Phone tilted down (face down)
                 totalWrong++;
                 showNextWord();  // Move to the next word
             }
@@ -188,6 +206,6 @@
             `;
         }
     </script>
-<p>edited</p>
+<p> this is editeeeeeeeeed </p>
 </body>
 </html>
