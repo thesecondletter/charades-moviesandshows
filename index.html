@@ -16,6 +16,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            transition: background-color 0.3s ease;
         }
 
         .container {
@@ -179,17 +180,27 @@
             window.addEventListener('deviceorientation', handleOrientation);
         }
 
-        // Handle device orientation events (phone tilted up = correct, phone tilted down = wrong)
+        // Handle device orientation events (phone tilted right = correct, phone tilted left = wrong)
         function handleOrientation(event) {
-            const beta = event.beta;
+            const gamma = event.gamma;  // Gamma is the left/right tilt of the phone
 
-            if (beta < -50) {  // Phone tilted up (face up, correct)
+            if (gamma > 30) {  // Phone tilted to the right (correct)
                 totalCorrect++;
+                flashScreen('green');  // Flash green for correct answer
                 showNextWord();  // Move to the next word
-            } else if (beta > 50) {  // Phone tilted down (face down, wrong)
+            } else if (gamma < -30) {  // Phone tilted to the left (wrong)
                 totalWrong++;
+                flashScreen('red');  // Flash red for wrong answer
                 showNextWord();  // Move to the next word
             }
+        }
+
+        // Flash screen with the given color
+        function flashScreen(color) {
+            document.body.style.backgroundColor = color;
+            setTimeout(() => {
+                document.body.style.backgroundColor = '#fef6e4';  // Reset background after flash
+            }, 300);
         }
 
         // End the game and show results
@@ -206,6 +217,6 @@
             `;
         }
     </script>
-<p>nr1</p>
+<p>nr2</p>
 </body>
 </html>
