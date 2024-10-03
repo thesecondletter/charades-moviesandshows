@@ -18,7 +18,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.5s ease;
         }
 
         @keyframes gradientAnimation {
@@ -117,7 +117,7 @@
 <body>
 
     <div class="container">
-        <h1>🎬</h1>
+        <h1>🎬 Charades Game 🎬</h1>
         <p id="game-duration-text">How long would you like to play?</p>
         <div class="timer-options">
             <button onclick="startGame(1)">1 Min</button>
@@ -219,7 +219,7 @@
 
             // If waiting for neutral position, check if the phone is back to normal
             if (waitingForNeutral) {
-                if (gamma > -10 && gamma < 10) {  // Gamma between -10 and 10 means phone is back to neutral position
+                if (gamma > -10 && gamma < 10) {  // Gamma between -10 and 10 means phone is back to normal position
                     waitingForNeutral = false;  // Now allow detection of next tilt
                 }
                 return;  // Don't process further until the phone is back to normal
@@ -227,12 +227,12 @@
 
             if (gamma > 30) {  // Phone tilted to the right (correct)
                 totalCorrect++;
-                flashScreen('#66ff66');  // Light green flash for correct answer
+                flashScreen('#90ee90');  // Lighter green for correct answer
                 showNextWord();  // Move to the next word
                 waitingForNeutral = true;  // Wait for the phone to return to neutral position
             } else if (gamma < -30) {  // Phone tilted to the left (wrong)
                 totalWrong++;
-                flashScreen('#ff6666');  // Light red flash for wrong answer
+                flashScreen('#ff9999');  // Lighter red for wrong answer
                 showNextWord();  // Move to the next word
                 waitingForNeutral = true;  // Wait for the phone to return to neutral position
             }
@@ -243,7 +243,7 @@
             document.body.style.backgroundColor = color;
             setTimeout(() => {
                 document.body.style.backgroundColor = '';  // Reset background after flash
-            }, 300);
+            }, 500);  // Longer delay for the flash to be more visible
         }
 
         // End the game and show results
@@ -269,5 +269,6 @@
             playAgainButton.classList.add('hidden');
         }
     </script>
+<p>nr10</p>
 </body>
 </html>
