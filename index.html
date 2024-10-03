@@ -118,7 +118,7 @@
 <body>
 
     <div class="container" id="game-container">
-        <h1>🎬 Charades Game 🎬</h1>
+        <h1>🎬</h1>
         <p id="game-duration-text">How long would you like to play?</p>
         <div class="timer-options">
             <button onclick="startGame(1)">1 Min</button>
@@ -207,7 +207,7 @@
         function showNextWord() {
             currentWord = words[wordIndex % words.length];  // Cycle through the words
             wordIndex++;
-            wordDisplay.textContent = `🎭 Act this out: ${currentWord}`;
+            wordDisplay.textContent = `🎭 ${currentWord}`;
         }
 
         // Handle motion detection
