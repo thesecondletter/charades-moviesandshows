@@ -179,14 +179,14 @@
             window.addEventListener('deviceorientation', handleOrientation);
         }
 
-        // Handle device orientation events (phone up = correct, phone down = wrong)
+        // Handle device orientation events (phone tilted up = correct, phone tilted down = wrong)
         function handleOrientation(event) {
             const beta = event.beta;
 
-            if (beta > 30) {  // Phone tilted up (face up)
+            if (beta < -50) {  // Phone tilted up (face up, correct)
                 totalCorrect++;
                 showNextWord();  // Move to the next word
-            } else if (beta < -30) {  // Phone tilted down (face down)
+            } else if (beta > 50) {  // Phone tilted down (face down, wrong)
                 totalWrong++;
                 showNextWord();  // Move to the next word
             }
@@ -206,5 +206,6 @@
             `;
         }
     </script>
+
 </body>
 </html>
