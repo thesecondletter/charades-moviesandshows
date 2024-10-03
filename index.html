@@ -40,6 +40,7 @@
             padding: 40px;
             max-width: 500px;
             width: 100%;
+            transition: background-color 0.5s ease;
         }
 
         h1 {
@@ -116,7 +117,7 @@
 </head>
 <body>
 
-    <div class="container">
+    <div class="container" id="game-container">
         <h1>🎬 Charades Game 🎬</h1>
         <p id="game-duration-text">How long would you like to play?</p>
         <div class="timer-options">
@@ -149,6 +150,7 @@
         const durationText = document.getElementById('game-duration-text');
         const timerOptions = document.querySelector('.timer-options');
         const playAgainButton = document.getElementById('play-again');
+        const gameContainer = document.getElementById('game-container'); // Container element
 
         // Function to start the game
         function startGame(duration) {
@@ -227,22 +229,22 @@
 
             if (gamma > 30) {  // Phone tilted to the right (correct)
                 totalCorrect++;
-                flashScreen('#90ee90');  // Lighter green for correct answer
+                flashContainer('#90ee90');  // Lighter green for correct answer
                 showNextWord();  // Move to the next word
                 waitingForNeutral = true;  // Wait for the phone to return to neutral position
             } else if (gamma < -30) {  // Phone tilted to the left (wrong)
                 totalWrong++;
-                flashScreen('#ff9999');  // Lighter red for wrong answer
+                flashContainer('#ff9999');  // Lighter red for wrong answer
                 showNextWord();  // Move to the next word
                 waitingForNeutral = true;  // Wait for the phone to return to neutral position
             }
         }
 
-        // Flash screen with the given color
-        function flashScreen(color) {
-            document.body.style.backgroundColor = color;
+        // Flash the container with the given color
+        function flashContainer(color) {
+            gameContainer.style.backgroundColor = color;
             setTimeout(() => {
-                document.body.style.backgroundColor = '';  // Reset background after flash
+                gameContainer.style.backgroundColor = '#ffffff';  // Reset background after flash
             }, 500);  // Longer delay for the flash to be more visible
         }
 
@@ -269,6 +271,6 @@
             playAgainButton.classList.add('hidden');
         }
     </script>
-<p>nr10</p>
+<p>nr11</p>
 </body>
 </html>
