@@ -88,7 +88,7 @@
 
     <div class="container">
         <h1>🎬 Charades Game 🎬</h1>
-        <p>How long would you like to play?</p>
+        <p id="game-duration-text">How long would you like to play?</p>
         <div class="timer-options">
             <button onclick="startGame(1)">1 Min</button>
             <button onclick="startGame(2)">2 Mins</button>
@@ -114,6 +114,8 @@
         const wordDisplay = document.getElementById('word-display');
         const timerDisplay = document.getElementById('timer');
         const scoreboard = document.getElementById('scoreboard');
+        const durationText = document.getElementById('game-duration-text');
+        const timerOptions = document.querySelector('.timer-options');
 
         // Function to start the game
         function startGame(duration) {
@@ -124,8 +126,9 @@
             wordIndex = 0;
             showNextWord();
 
-            // Hide buttons and show game elements
-            document.querySelector('.timer-options').classList.add('hidden');
+            // Hide the duration selection and duration text, show game elements
+            timerOptions.classList.add('hidden');
+            durationText.classList.add('hidden');
             wordDisplay.classList.remove('hidden');
             timerDisplay.classList.remove('hidden');
 
@@ -164,10 +167,10 @@
 
             if (beta > 50) {  // Phone tilted up (face up)
                 totalCorrect++;
-                showNextWord();
+                showNextWord();  // Move to the next word
             } else if (beta < -50) {  // Phone tilted down (face down)
                 totalWrong++;
-                showNextWord();
+                showNextWord();  // Move to the next word
             }
         }
 
